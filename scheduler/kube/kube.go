@@ -164,6 +164,12 @@ func (s *kubeScheduler) Schedule(ctx context.Context, stage *core.Stage) error {
 		job.Spec.Template.Spec.NodeSelector = stage.Labels
 	}
 
+	if job.Spec.Template.Spec.NodeSelector == nil {
+		job.Spec.Template.Spec.NodeSelector = map[string]string{}
+	}
+
+	job.Spec.Template.Spec.NodeSelector["workload"] = "testing"
+
 	if arch := stage.Arch; arch != "amd64" {
 		if job.Spec.Template.Spec.NodeSelector == nil {
 			job.Spec.Template.Spec.NodeSelector = map[string]string{}
