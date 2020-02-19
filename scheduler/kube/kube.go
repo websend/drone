@@ -26,6 +26,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 type kubeScheduler struct {
@@ -92,6 +93,13 @@ func (s *kubeScheduler) Schedule(ctx context.Context, stage *core.Stage) error {
 		},
 	)
 
+	cpuRequest := resource.MustParse("1")
+	resources := v1.ResourceRequirements{
+		Requests: v1.ResourceList {
+			v1.ResourceCPU: cpuRequest,
+		},
+	}
+
 	var pull v1.PullPolicy
 	switch s.config.ImagePullPolicy {
 	case "IfNotPresent":
@@ -153,6 +161,7 @@ func (s *kubeScheduler) Schedule(ctx context.Context, stage *core.Stage) error {
 						ImagePullPolicy: pull,
 						Env:             env,
 						VolumeMounts:    mounts,
+						Resources:			 resources,
 					}},
 					Volumes: volumes,
 				},
