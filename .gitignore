@@ -8,3 +8,5 @@
 release/
 scripts/*.go
 TODO*
+.envrc
+build.sh
