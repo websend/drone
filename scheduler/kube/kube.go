@@ -93,7 +93,7 @@ func (s *kubeScheduler) Schedule(ctx context.Context, stage *core.Stage) error {
 		},
 	)
 
-	cpuRequest := resource.MustParse("1")
+	cpuRequest := resource.MustParse("2")
 	resources := v1.ResourceRequirements{
 		Requests: v1.ResourceList {
 			v1.ResourceCPU: cpuRequest,
